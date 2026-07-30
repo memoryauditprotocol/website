@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Memory Audit Protocol</title>
+<meta name="description" content="A proposal for separating AI reasoning from custody of the memory it uses, so that every access to a person's data leaves a record that can be checked.">
+<meta name="color-scheme" content="light">
+<meta property="og:title" content="Memory Audit Protocol">
+<meta property="og:description" content="A proposal for separating AI reasoning from custody of the memory it uses, so that every access to a person's data leaves a record that can be checked.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://memoryauditprotocol.org/">
+<link rel="canonical" href="https://memoryauditprotocol.org/">
+<style>
+  :root {
+    --bg:    #fefdfb;
+    --fg:    #1c1b19;
+    --muted: #56534e;
+    --rule:  #d8d4cd;
+    --link:  #1f3f73;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    padding: 0 1.5rem;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+    font-size: 18px;
+    line-height: 1.62;
+  }
+  .wrap { max-width: 37rem; margin: 0 auto; padding: 5rem 0 6rem; }
+
+  header { margin-bottom: 3rem; }
+  h1 {
+    font-size: 1.7rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 1rem;
+  }
+  .lede { font-size: 1.12rem; margin: 0 0 1rem; }
+  .standing { font-size: 0.94rem; color: var(--muted); font-style: italic; margin: 0; }
+
+  h2 {
+    font-size: 1.12rem;
+    font-weight: 700;
+    margin: 3rem 0 1rem;
+    padding-top: 1.6rem;
+    border-top: 1px solid var(--rule);
+  }
+  section:first-of-type h2 { margin-top: 0; }
+
+  p { margin: 0 0 1.1rem; }
+  p:last-child { margin-bottom: 0; }
+  strong { font-weight: 700; }
+
+  a { color: var(--link); }
+  a:hover { text-decoration: none; }
+
+  blockquote {
+    margin: 1.7rem 0;
+    padding: 0 0 0 1.4rem;
+    border-left: 2px solid var(--rule);
+  }
+  blockquote p { font-size: 0.98rem; }
+
+  figure { margin: 2.2rem 0; }
+  figure svg { width: 100%; height: auto; display: block; }
+  figcaption { font-size: 0.92rem; color: var(--muted); margin-top: 1rem; font-style: italic; }
+  .d-box  { fill: none; stroke: #b3aea6; stroke-width: 1.25; }
+  .d-zone { fill: none; stroke: #cbc6be; stroke-width: 1.25; stroke-dasharray: 4 4; }
+  .d-name { fill: var(--fg); font-family: Charter, Cambria, Georgia, serif; font-size: 13.5px; font-weight: 700; }
+  .d-sub  { fill: var(--muted); font-family: Charter, Cambria, Georgia, serif; font-size: 11.5px; }
+  .d-lab  { fill: var(--muted); font-family: Charter, Cambria, Georgia, serif; font-size: 11.5px; font-style: italic; }
+  .d-zlab { fill: #8d8880; font-family: Charter, Cambria, Georgia, serif; font-size: 11px; font-style: italic; }
+  .d-line { stroke: #6f6a63; stroke-width: 1.25; fill: none; }
+  .d-head { fill: #6f6a63; stroke: none; }
+
+  .email { font-size: 1.05rem; margin-top: 1.2rem; }
+
+  footer {
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--rule);
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  @media (max-width: 32rem) {
+    body { font-size: 17px; padding: 0 1.15rem; }
+    .wrap { padding: 3rem 0 4rem; }
+    h1 { font-size: 1.42rem; }
+    .lede { font-size: 1.05rem; }
+    h2 { margin-top: 2.5rem; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Memory Audit Protocol</h1>
+  <p class="lede">A proposal for separating AI reasoning from custody of the memory it uses, so that every access to a person's data leaves a record that can be checked.</p>
+  <p class="standing">A research proposal. A pilot is in development during 2026.</p>
+</header>
+
+<main>
+
+<section>
+  <h2>The problem</h2>
+
+  <p>AI systems are accumulating persistent memory about the people who use them. That memory sits inside the platform running the model, and the platform decides how long it is kept, what it is used for, and what deletion means in practice.</p>
+
+  <p><strong>The defaults belong to the platform.</strong> Controls exist. Temporary chat modes, training opt-outs, and retention settings are all offered. They are switches the platform owns, sets, and can change, and a person using them has no way to confirm the state on the other side.</p>
+
+  <p><strong>Memory is consolidating.</strong> As assistants take on more of people's work, the record of what they know about a person grows and concentrates with a small number of providers. That concentration is happening now, while the defaults are still being set, which is the point at which earlier internet markets became difficult to reverse.</p>
+
+  <p><strong>Deletion cannot be verified.</strong> Once data has been read, copies may persist in caches, logs, derived models, and downstream systems. A deletion request is answered with an assertion. Nothing in the architecture produces evidence either way.</p>
+
+  <p><strong>The law grants rights the architecture cannot evidence.</strong> European law already gives people rights over data held about them. The GDPR provides a right to erasure. The Data Act, applicable since 12 September 2025, provides rights of access to data generated by connected products and rights to switch between data processing services. The Digital Markets Act obliges designated gatekeepers to provide effective portability of the data they hold. None of these instruments was drafted with model memory in mind, and none of them gives a person or a regulator a way to check that a request was actually carried out.</p>
+</section>
+
+<section>
+  <h2>Why this matters now</h2>
+
+  <p>The architecture is not yet fixed. Foundation models are being built at a scale measured in hundreds of billions, and for most participants that race is already settled. The memory layer is not. It is still being designed, and the defaults set now are the ones that will be hardest to revisit later.</p>
+
+  <p>The pattern is familiar. When social media and cloud computing emerged, a small number of platforms set the architecture before the rules arrived, and the years since have been spent trying to catch up. The rules that eventually came could describe the harm precisely and do comparatively little about the structure that produced it.</p>
+
+  <p>There is a second reason the timing matters. The argument is already being won on the enterprise side. Large firms are negotiating for trust boundaries around their own use of AI, for control over the traces and adapted weights their usage generates, and for the ability to move between providers without surrendering what they have accumulated. The exposure for an individual is the same in kind. The difference is that a person has neither the leverage to negotiate those terms nor a mechanism through which to exercise them.</p>
+
+  <p>The interests that converge here are not usually in the same room. A data protection regulator gains a way to check compliance rather than infer it. A competition authority gains lower switching costs. A smaller firm gains the ability to build on memory it did not have to accumulate first. A person gains the ability to see what was read about them, and when. The memory layer is where those conversations meet.</p>
+
+  <p>None of this requires the systems people already use to stop working. That property is worth protecting deliberately. An architecture that demanded the replacement of what exists would not be adopted, and would not deserve to be.</p>
+</section>
+
+<section>
+  <h2>What the protocol proposes</h2>
+
+  <p>The Memory Audit Protocol separates the reasoning system from custody of the memory it uses.</p>
+
+  <p>Under this design an AI system holds no persistent memory of its own. Memory stays with the institution that already holds the relevant records: a hospital for medical history, a bank for financial records, a university for academic records, or a service the person chooses for themselves. When an AI system needs context it requests scoped access for a stated purpose, receives only what it was authorized to receive, and returns to a stateless condition when the session ends.</p>
+
+  <figure>
+    <svg viewBox="0 0 640 264" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="dgtitle">
+      <title id="dgtitle">A person authorizes an AI system, which requests scoped memory from a custodian. The custodian returns only what was scoped and writes every access to an append-only ledger that the person and their regulator can read.</title>
+
+      <rect class="d-zone" x="376" y="58" width="256" height="196" rx="3"/>
+      <text class="d-zlab" x="392" y="79">under the custodian's control</text>
+
+      <rect class="d-box" x="8" y="94" width="112" height="54" rx="3"/>
+      <text class="d-name" x="64" y="118" text-anchor="middle">Person</text>
+      <text class="d-sub"  x="64" y="135" text-anchor="middle">or institution</text>
+
+      <rect class="d-box" x="184" y="94" width="132" height="54" rx="3"/>
+      <text class="d-name" x="250" y="118" text-anchor="middle">AI system</text>
+      <text class="d-sub"  x="250" y="135" text-anchor="middle">retains nothing</text>
+
+      <rect class="d-box" x="390" y="94" width="228" height="54" rx="3"/>
+      <text class="d-name" x="504" y="118" text-anchor="middle">Custodian</text>
+      <text class="d-sub"  x="504" y="135" text-anchor="middle">holds the memory, scoped by category</text>
+
+      <rect class="d-box" x="390" y="186" width="228" height="54" rx="3"/>
+      <text class="d-name" x="504" y="210" text-anchor="middle">Audit ledger</text>
+      <text class="d-sub"  x="504" y="227" text-anchor="middle">append-only, tamper-evident</text>
+
+      <path class="d-line" d="M120 121 H174"/>
+      <path class="d-head" d="M182 121 l-9 -4.5 v9 z"/>
+      <text class="d-lab" x="151" y="112" text-anchor="middle">authorizes</text>
+
+      <path class="d-line" d="M326 121 H380"/>
+      <path class="d-head" d="M388 121 l-9 -4.5 v9 z"/>
+      <path class="d-head" d="M318 121 l9 -4.5 v9 z"/>
+      <rect x="313" y="99" width="86" height="15" fill="var(--bg)"/>
+      <text class="d-lab" x="356" y="112" text-anchor="middle">scoped access</text>
+
+      <path class="d-line" d="M440 148 V176"/>
+      <path class="d-head" d="M440 184 l-4.5 -9 h9 z"/>
+      <text class="d-lab" x="452" y="170" text-anchor="start">every access recorded</text>
+
+      <path class="d-line" d="M390 213 H64 V164"/>
+      <path class="d-head" d="M64 156 l-4.5 9 h9 z"/>
+      <text class="d-lab" x="222" y="205" text-anchor="middle">readable by the person and their regulator</text>
+    </svg>
+    <figcaption>The AI system never holds the memory. It borrows a scoped view of it, for a stated purpose, and the borrowing is written down.</figcaption>
+  </figure>
+
+  <p>The design does not put everything about a person in one place. A single store for everything would recreate the concentration the protocol exists to address. The realistic shape is many custodians, each already responsible for the data it holds, connected by a common way of asking. Email works this way, and it is the closer analogy.</p>
+</section>
+
+<section>
+  <h2>How it works</h2>
+
+  <p>The protocol requires no new infrastructure and defines no new network. It is a set of obligations about how an AI system and a custodian deal with each other, expressed on top of the Model Context Protocol.</p>
+
+  <p><strong>Access is scoped and bound to a purpose.</strong> A custodian divides memory into categories and issues access for a declared purpose, one session at a time. A request that reaches past what it was granted is refused rather than quietly satisfied, and widening it requires going back to the person. Categories differ by institution, because a hospital and a bank hold different things, but the obligations attached to them do not.</p>
+
+  <p><strong>Every access is written down.</strong> The custodian records what was released, to whom, under what authorization, and when, in an append-only log that cannot be altered without the alteration being evident. The record is held on the custodian's side, not the platform's, and is meant to be read by the person it concerns and by whoever regulates them. This is the part of the design that does not exist anywhere today.</p>
+
+  <p><strong>Everything else is ordinary internet infrastructure.</strong> Transport is HTTPS. Endpoints are found the way any other service is found. The protocol deliberately introduces no central directory: a custodian is reachable because whoever operates it publishes it under a domain they control, not because an intermediary agreed to list it. That property is the requirement. The mechanism that satisfies it is not novel and is not meant to be.</p>
+
+  <blockquote>
+    <p>It is worth saying plainly, because it is the first question technical readers ask. MAP is a governance profile on top of MCP rather than a competing stack. MCP defines how an AI system talks to an external service. MAP defines what has to be true about that exchange for it to count as governed: how access is scoped to a declared purpose, what the custodian is obliged to record, and what the person and the regulator can inspect afterwards.</p>
+  </blockquote>
+</section>
+
+<section>
+  <h2>What this does not solve</h2>
+
+  <p>One limitation should be stated openly, because it bounds what the architecture can claim.</p>
+
+  <p>Once a custodian releases data to an AI system, the protocol cannot stop that system from keeping a copy. Encryption in transit does not help, because the receiving system has to be able to read what it was sent.</p>
+
+  <p>What the architecture provides instead is evidence. A record exists of what was released, to whom, under what authorization, and when. That makes improper retention detectable and attributable after the fact, which is what an enforcement action requires. It does not make the retention impossible. Closing that gap is a legal question rather than an engineering one, and the protocol's contribution is to make the obligation checkable.</p>
+</section>
+
+<section>
+  <h2>Status</h2>
+
+  <p>The Memory Audit Protocol is a research proposal. There is no production implementation and nothing to sign up for.</p>
+
+  <p>A pilot is being built during 2026 to test whether the architecture holds in practice and to measure what it costs to run. The pilot places a stateless inference agent on commercial cloud compute and a memory custodian on separate sovereign infrastructure, with memory divided into scoped categories and every access written to the ledger. Running the model on foreign compute is deliberate. If the separation holds under those conditions, it holds under easier ones.</p>
+
+  <p>The questions the pilot is meant to answer are how much latency and overhead authorization adds to a session, how finely access can be scoped before the design becomes unusable for the person granting it, and whether an operator can run a custodian without specialist help.</p>
+
+  <p>The specification will be published openly, and the protocol layer is intended to stay royalty-free, following the pattern set by OAuth and TLS.</p>
+</section>
+
+<section>
+  <h2>Contact</h2>
+
+  <p>If you work on data governance, operate a system that could act as a custodian, or write or enforce the rules this would sit under, we would like to hear from you.</p>
+
+  <p class="email"><a href="mailto:hello@memoryauditprotocol.org">hello@memoryauditprotocol.org</a></p>
+</section>
+
+</main>
+
+<footer>
+  <p>This site sets no cookies, runs no analytics, and loads nothing from third-party servers.</p>
+</footer>
+
+</div>
+</body>
+</html>
