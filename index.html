@@ -488,7 +488,7 @@
         </p>
         <div class="meta-block">
           <span><strong>Status:</strong> Research proposal, no production implementation</span>
-          <span><strong>Pilot:</strong> In development, 2026</span>
+          <span><strong>Pilot:</strong> In development, 2026–2027</span>
           <span><strong>Layer:</strong> Governance profile on Model Context Protocol</span>
           <span><strong>License intent:</strong> Royalty-free specification</span>
         </div>
@@ -504,10 +504,10 @@
           requests scoped access for a stated purpose, and every access is written to an append-only
           ledger that the person and their regulator can read. MAP does not prevent a system from
           retaining data once it has been released - no cryptographic mechanism can. What it
-          provides is evidence: a checkable record of what was accessed, by whom, under what
-          authorization, and when. The specification is expressed as a governance profile on top of
+          provides is evidence: a checkable record of whose data was accessed, by whom, for what
+          purpose, under what authorization, and when. The specification is expressed as a governance profile on top of
           the Model Context Protocol, and a pilot separating a stateless inference agent from a
-          sovereign memory custodian is being built during 2026.
+          sovereign memory custodian is now being built.
         </p>
       </div>
 
@@ -578,7 +578,23 @@
               >[2]</a
             >
             The Digital Markets Act obliges designated gatekeepers to provide effective portability
-            of the data they hold.<a href="#ref3" class="fn-ref" id="fnref3">[3]</a>
+            of the data their users provide or generate.<a href="#ref3" class="fn-ref" id="fnref3">[3]</a>
+          </p>
+          <p>
+            The right of access also covers how a person's data has been used. The Court of Justice
+            of the European Union has held that the GDPR right of access includes information on
+            when a person's data was consulted and for what purposes.<a
+              href="#ref4"
+              class="fn-ref"
+              id="fnref4"
+              >[4]</a
+            >
+            In Canada, PIPEDA requires an organization, on request, to give a person an account of
+            the use made of their information and of the third parties to which it was
+            disclosed.<a href="#ref5" class="fn-ref" id="fnref5">[5]</a> An organization whose
+            records are read by an AI agent has to be able to answer these requests. The Model
+            Context Protocol, through which AI agents increasingly reach those records, defines no
+            record of whose data a call touched or why it was made.
           </p>
         </section>
 
@@ -720,7 +736,7 @@
           <p>
             The protocol requires no new infrastructure and defines no new network. It is a set of
             obligations about how an AI system and a custodian deal with each other, expressed on
-            top of the Model Context Protocol.<a href="#ref4" class="fn-ref" id="fnref4">[4]</a>
+            top of the Model Context Protocol.<a href="#ref6" class="fn-ref" id="fnref6">[6]</a>
           </p>
 
           <h3 class="sub-title">
@@ -728,12 +744,14 @@
           </h3>
           <div class="sidenote">
             <span class="label">Definition: Scoped access</span>
-            Only the categories and purpose authorized for that session - not a standing or general
-            grant. Widening scope requires returning to the person.
+            Only the categories the person approved, for a purpose the custodian allows - never a
+            general grant. The person can withdraw it, and widening scope requires returning to the
+            person.
           </div>
           <p>
-            A custodian divides memory into categories and issues access for a declared purpose, one
-            session at a time. A request that reaches past what it was granted is refused rather
+            A custodian divides memory into categories. The person approves which categories an AI
+            system may use. Each request states its purpose, and the custodian checks it against
+            the purposes it allows. A request that reaches past what it was granted is refused rather
             than quietly satisfied, and widening it requires going back to the person. Categories
             differ by institution, because a hospital and a bank hold different things, but the
             obligations attached to them do not.
@@ -746,9 +764,8 @@
             This is the mechanism that makes retention detectable after the fact.
           </div>
           <p>
-            The custodian records what was released, to whom, under what authorization, and when, in
-            an append-only log that cannot be altered without the alteration being evident. The
-            record is held on the custodian's side, not the platform's, and is meant to be read by
+            The custodian records what was released, whose data it was, to whom, for what declared
+            purpose, under what authorization, and when, in an append-only log. The record is held on the custodian's side, not the platform's, and is meant to be read by
             the person it concerns and by whoever regulates them. This is the part of the design
             that does not exist anywhere today.
           </p>
@@ -788,7 +805,8 @@
           </p>
           <p>
             What the architecture provides instead is evidence. A record exists of what was
-            released, to whom, under what authorization, and when. That makes improper retention
+            released, whose data it was, to whom, for what purpose, under what authorization, and
+            when. That makes improper retention
             detectable and attributable after the fact, which is what an enforcement action
             requires. It does not make the retention impossible. Closing that gap is a legal
             question rather than an engineering one, and the protocol's contribution is to make the
@@ -803,8 +821,8 @@
             Nothing to sign up for.
           </div>
           <p>
-            A pilot is being built during 2026 to test whether the architecture holds in practice
-            and to measure what it costs to run. The pilot places a stateless inference agent on
+            A pilot is now being built to test whether the architecture holds in practice and to
+            measure what it costs to run. The pilot places a stateless inference agent on
             commercial cloud compute and a memory custodian on separate sovereign infrastructure,
             with memory divided into scoped categories and every access written to the ledger.
             Running the model on foreign compute is deliberate: if the separation holds under those
@@ -820,12 +838,12 @@
           <p>
             The specification will be published openly, and the protocol layer is intended to stay
             royalty-free, following the pattern set by OAuth<a
-              href="#ref5"
+              href="#ref7"
               class="fn-ref"
-              id="fnref5"
-              >[5]</a
+              id="fnref7"
+              >[7]</a
             >
-            and TLS.<a href="#ref6" class="fn-ref" id="fnref6">[6]</a>
+            and TLS.<a href="#ref8" class="fn-ref" id="fnref8">[8]</a>
           </p>
         </section>
 
@@ -846,17 +864,27 @@
               gatekeepers to provide effective data portability. <a href="#fnref3">↩</a>
             </li>
             <li id="ref4">
-              Model Context Protocol specification (Anthropic, 2024–), the transport and interface
-              layer MAP expresses its obligations on top of. <a href="#fnref4">↩</a>
+              Court of Justice of the European Union, Case C-579/21, <em>Pankki S</em>, judgment of
+              22 June 2023 - the right of access under GDPR Art. 15 includes information on the
+              dates and purposes of consultations of a person's data. <a href="#fnref4">↩</a>
             </li>
             <li id="ref5">
-              RFC 6749, The OAuth 2.0 Authorization Framework, IETF, 2012 - cited as the precedent
-              for a royalty-free, widely adopted authorization layer. <a href="#fnref5">↩</a>
+              Personal Information Protection and Electronic Documents Act, S.C. 2000, c. 5,
+              Schedule 1, principle 4.9.1 - an account of the use made of personal information and
+              of the third parties to which it has been disclosed. <a href="#fnref5">↩</a>
             </li>
             <li id="ref6">
+              Model Context Protocol specification (Agentic AI Foundation, Linux Foundation, 2024–) -
+              the transport and interface layer MAP expresses its obligations on top of. <a href="#fnref6">↩</a>
+            </li>
+            <li id="ref7">
+              RFC 6749, The OAuth 2.0 Authorization Framework, IETF, 2012 - cited as the precedent
+              for a royalty-free, widely adopted authorization layer. <a href="#fnref7">↩</a>
+            </li>
+            <li id="ref8">
               RFC 8446, The Transport Layer Security (TLS) Protocol, Version 1.3, IETF, 2018 - cited
               as the precedent for a royalty-free, widely adopted transport-security layer.
-              <a href="#fnref6">↩</a>
+              <a href="#fnref8">↩</a>
             </li>
           </ol>
         </section>
@@ -875,7 +903,8 @@
 
       <footer class="colophon">
         This site sets no cookies, runs no analytics, and loads nothing from third-party servers.
-        All fonts and styling are served from this single file.
+        All styling is inline in this single file, and text is set in fonts already installed on
+        your device.
       </footer>
     </div>
   </body>
